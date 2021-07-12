@@ -1,11 +1,11 @@
   applications:
-  - name: dealerreiew
+  - name: edxcourses
     routes:
-      - route: host.domain
+      - route: edxcourses.eu-gb.mybluemix.net
     memory: 128M
     buildpack: python_buildpack
-  - name: dealerreiew-nginx
+  - name: edxcourses-nginx
     routes:
-      - route: host.domain/static
+      - route: edxcourses.eu-gb.mybluemix.net/static
     memory: 128M
     buildpack: staticfile_buildpack
