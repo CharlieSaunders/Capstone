@@ -43,13 +43,13 @@ def login_request(request):
         if user is not None:
             print("user auth")
             login(request, user)
-            login_view = redirect('/djangoapp:index')
+            login_view = redirect('/djangoapp/index')
         else:
             print("user did not auth")
-            login_view = redirect('/djangoapp:index')
+            login_view = redirect('/djangoapp/index')
     else:
         print("method was not post")
-        login_view = redirect('/djangoapp:index')
+        login_view = redirect('/djangoapp/index')
     return login_view
 
 # Create a `logout_request` view to handle sign out request
@@ -83,7 +83,7 @@ def registration_request(request):
                                             last_name=last_name,
                                             password=password)
             login(request, user)
-            registration_view = redirect("/djangoapp:index")
+            registration_view = redirect("/djangoapp/index")
         else:
             registration_view = render(request, '/djangoapp/registration.html')
     return registration_view
