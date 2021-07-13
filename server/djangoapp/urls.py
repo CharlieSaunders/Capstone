@@ -2,9 +2,11 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 from . import views
+from django.contrib import admin
 
 app_name = 'djangoapp'
 urlpatterns = [
+    path('admin/', admin.site.urls),
     # path for home page
     path(route='', view=views.get_dealerships, name='index'),
     # path for about view

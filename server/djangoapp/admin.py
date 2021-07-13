@@ -4,7 +4,7 @@ from .models import *
 # CarModelInline class
 class CarModelInline(admin.StackedInline):
     model = CarModel
-    extra = 1
+    extra = 5
 # CarModelAdmin class
 class CarModelAdmin(admin.ModelAdmin):
     list_display = ['name', 'carmake', 'year', 'type']
