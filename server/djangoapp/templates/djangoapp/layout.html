@@ -43,7 +43,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'djangoapp:index' %}">Home</a>
+                        <a class="nav-link active" href="{% url 'djangoapp:index' %}">Dealership Reviews</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'djangoapp:about' %}">About Us</a>
@@ -91,24 +91,15 @@
         <footer class="skeleton-footer mt-auto">
             <nav class="nav nav-skeleton-footer justify-content-center d-none d-lg-flex">
                 {% url 'djangoapp:index' as url %}
-                <a class="nav-link {% if request.path == url %}active{% endif %}" href="{{ url }}">Home</a> {% url 'djangoapp:about' as url %}
+                <a class="nav-link {% if request.path == url %}active{% endif %}" href="{{ url }}">Reviews</a> {% url 'djangoapp:about' as url %}
                 <a class="nav-link {% if request.path == url %}active{% endif %}" href="{{ url }}">About Us</a> {% url 'djangoapp:contact' as url %}
                 <a class="nav-link {% if request.path == url %}active{% endif %}" href="{{ url }}">Contact</a>
             </nav>
             <div class="inner mt-4">
-                <p>Author:<a href="https://github.com/CharlieSaunders"><span class="text-blue"> charliesaunders</span></a></p>
+                <p>Made by:<a href="https://github.com/CharlieSaunders"><span class="text-blue"> charliesaunders</span></a></p>
             </div>
         </footer>
     </div>
-    <script>
-        function openNav() {
-            document.getElementById("mobileNav").style.width = "100%";
-        }
-
-        function closeNav() {
-            document.getElementById("mobileNav").style.width = "0%";
-        }
-    </script>
 </body>
 
 </html>

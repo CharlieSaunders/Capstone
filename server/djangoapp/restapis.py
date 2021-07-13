@@ -7,13 +7,11 @@ from requests.auth import HTTPBasicAuth
 
 API_URL_DEALERSHIP_GET = "https://service.eu.apiconnect.ibmcloud.com/gws/apigateway/api/5e2f7a8e6a9a514ec9998a8e70b88a0ce293fd848df7539953e8b384663236ac/api/api/dealerships/entries"
 API_URL_REVIEW_GET = 'https://service.eu.apiconnect.ibmcloud.com/gws/apigateway/api/5e2f7a8e6a9a514ec9998a8e70b88a0ce293fd848df7539953e8b384663236ac/api/api/reviews/entries'
-API_URL_REVIEW_ADD = 'https://service.eu.apiconnect.ibmcloud.com/gws/apigateway/api/5e2f7a8e6a9a514ec9998a8e70b88a0ce293fd848df7539953e8b384663236ac/api/api/reviews/add'
-API_URL_DEALERSHIP_ADD = "https://service.eu.apiconnect.ibmcloud.com/gws/apigateway/api/5e2f7a8e6a9a514ec9998a8e70b88a0ce293fd848df7539953e8b384663236ac/api/api/dealerships/add"
+API_URL_REVIEW_ADD = 'https://35ab1230.eu-gb.apigw.appdomain.cloud/api/api/reviews/save'
+API_URL_DEALERSHIP_ADD = "https://35ab1230.eu-gb.apigw.appdomain.cloud/api/api/dealers/add"
 API_URL_SENTIMENT = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/88d0c1aa-ff76-44ea-ac93-f969b43db7d9'
 
 # Create a `get_request` to make HTTP GET requests
-# e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
-#                                     auth=HTTPBasicAuth('apikey', api_key))
 def get_request(url, **kwargs):
     print(kwargs)
     print("GET from {} ".format(url))
@@ -26,7 +24,6 @@ def get_request(url, **kwargs):
     return json_data
 
 # Create a `post_request` to make HTTP POST requests
-# e.g., response = requests.post(url, params=kwargs, json=payload)
 def post_request(url, json_payload, **kwargs):
     """ Post"""
     try:
@@ -66,24 +63,34 @@ def get_dealer_reviews_from_cf(dealerId):
         reviews = json_result["entries"]
         for review in reviews:
             sentiment = analyze_review_sentiments(review["review"])
-            dealer_review = DealerReview(id=review["id"],
-                                         name=review["name"],
-                                         dealership=review["dealership"],
-                                         review=review["review"],
-                                         purchase=review["purchase"],
-                                         purchase_date=review["purchase_date"],
-                                         car_make=review["car_make"],
-                                         car_model=review["car_model"],
-                                         car_year=review["car_year"],
-                                         sentiment=sentiment)
-            results.append(dealer_review)
+            if(review["purchase"]):
+                dealer_review = DealerReview(id=review["id"],
+                                            dealership=review["dealership"],
+                                            review=review["review"],
+                                            purchase=review["purchase"],
+                                            purchase_date=review['purchase_date'],
+                                            car_make=review["car_make"],
+                                            car_model=review["car_model"],
+                                            car_year=review["car_year"],
+                                            sentiment=sentiment)
+                results.append(dealer_review)
+            else:
+                dealer_review = DealerReview(id=review["id"],
+                                            dealership=review["dealership"],
+                                            review=review["review"],
+                                            purchase=review["purchase"],
+                                            purchase_date="01/01/0000",
+                                            car_make="None",
+                                            car_model="None",
+                                            car_year="None",
+                                            sentiment=sentiment)
+                results.append(dealer_review)
     return results
 
 def add_dealer_review_to_db(review_post):
     """ Add Review """
     review = {
         "id": review_post['review_id'],
-        "name": review_post['reviewer_name'],
         "dealership": review_post['dealership'],
         "review": review_post['review'],
         "purchase": review_post.get('purchase', False),
@@ -96,9 +103,6 @@ def add_dealer_review_to_db(review_post):
 
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
-# def analyze_review_sentiments(text):
-# - Call get_request() with specified arguments
-# - Get the returned sentiment label such as Positive or Negative
 def analyze_review_sentiments(text):
     url = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/88d0c1aa-ff76-44ea-ac93-f969b43db7d9"
     api_key = "ul4LUhas5N_IUWIGV1wfauUZ-8W1f9JfxbOgM_2ve79j"
@@ -106,5 +110,3 @@ def analyze_review_sentiments(text):
     if json_result:
         sentiment_result = json_result.get('label', 'neutral')
     return sentiment_result 
-
-

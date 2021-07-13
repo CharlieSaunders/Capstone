@@ -7,9 +7,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-from .restapis import get_dealerships_from_cf, \
-    get_dealer_reviews_from_cf, \
-    add_dealer_review_to_db
+from .restapis import *
 from .models import CarModel
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -33,22 +31,20 @@ def contact(request):
 
 # Create a `login_request` view to handle sign in request
 def login_request(request):
-    """ Login Request """
-    messages.error(request, 'Please enter correct username and password!')
+    context = {}
     if request.method == "POST":
-        print("post to login \r")
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
-            print("user is not None \r")
+            print(user)
             login(request, user)
-            login_view = redirect('djangoapp/index.html')
+            return render(request, 'djangoapp/index.html', context)
         else:
-            login_view = redirect('djangoapp/index.html')
+            context['message'] = "Invalid username or password."
+            return render(request, 'djangoapp/index.html', context)
     else:
-        login_view = redirect('djangoapp/index.html')
-    return login_view
+        return render(request, 'djangoapp/index.html', context)
 
 # Create a `logout_request` view to handle sign out request
 def logout_request(request):
@@ -60,6 +56,7 @@ def logout_request(request):
 # Create a `registration_request` view to handle sign up request
 def registration_request(request):
     """ Registration Request """
+    context = {}
     if request.method == 'GET':
         registration_view = render(request, 'djangoapp/registration.html')
     elif request.method == 'POST':
@@ -81,7 +78,7 @@ def registration_request(request):
                                             last_name=last_name,
                                             password=password)
             login(request, user)
-            registration_view = redirect("djangoapp/index.html")
+            registration_view = render(request, 'djangoapp/index.html', context)
         else:
             registration_view = render(request, 'djangoapp/registration.html')
     return registration_view
