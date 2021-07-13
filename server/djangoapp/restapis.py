@@ -7,7 +7,7 @@ from requests.auth import HTTPBasicAuth
 
 API_URL_DEALERSHIP_GET = "https://service.eu.apiconnect.ibmcloud.com/gws/apigateway/api/5e2f7a8e6a9a514ec9998a8e70b88a0ce293fd848df7539953e8b384663236ac/api/api/dealerships/entries"
 API_URL_REVIEW_GET = 'https://service.eu.apiconnect.ibmcloud.com/gws/apigateway/api/5e2f7a8e6a9a514ec9998a8e70b88a0ce293fd848df7539953e8b384663236ac/api/api/reviews/entries'
-API_URL_REVIEW_ADD = 'https://35ab1230.eu-gb.apigw.appdomain.cloud/api/api/reviews/save'
+API_URL_REVIEW_POST = 'https://35ab1230.eu-gb.apigw.appdomain.cloud/api/api/reviews/save'
 API_URL_DEALERSHIP_ADD = "https://35ab1230.eu-gb.apigw.appdomain.cloud/api/api/dealers/add"
 API_URL_SENTIMENT = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/88d0c1aa-ff76-44ea-ac93-f969b43db7d9'
 
