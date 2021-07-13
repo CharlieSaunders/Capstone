@@ -36,20 +36,18 @@ def login_request(request):
     """ Login Request """
     messages.error(request, 'Please enter correct username and password!')
     if request.method == "POST":
-        print("Entered login request")
+        print("post to login \r")
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
-            print("user auth")
+            print("user is not None \r")
             login(request, user)
-            login_view = redirect('/djangoapp/index')
+            login_view = redirect('djangoapp/index.html')
         else:
-            print("user did not auth")
-            login_view = redirect('/djangoapp/index')
+            login_view = redirect('djangoapp/index.html')
     else:
-        print("method was not post")
-        login_view = redirect('/djangoapp/index')
+        login_view = redirect('djangoapp/index.html')
     return login_view
 
 # Create a `logout_request` view to handle sign out request
@@ -83,9 +81,9 @@ def registration_request(request):
                                             last_name=last_name,
                                             password=password)
             login(request, user)
-            registration_view = redirect("/djangoapp/index")
+            registration_view = redirect("djangoapp/index.html")
         else:
-            registration_view = render(request, '/djangoapp/registration.html')
+            registration_view = render(request, 'djangoapp/registration.html')
     return registration_view
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
